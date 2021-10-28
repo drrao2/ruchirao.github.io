@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+        <title>This is Ruchi Rao's homepage.</title>
+    </head>
+    <body>
+	<p><h3 style="text-align:center">Welcome to Ruchi Rao's Webpage !</h3></p>
+        <p>
+            This page consists two visualizations based on the building inventory dataset as part of the assignment 3 of IS-445: Data Visualization course.
+        </p>
+        <p>
+            The first visualization is a scatterplot depicting the association between Year Acquired and Year Constructed. The second visualization depicts the sum of square footage owned by every department in this dataset.
+        </p>
+        <div id="myviz_assign3"></div>
+		</body>
+    <script>
+       mySpec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A simple bar chart with embedded data.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/drrao2/ruchirao.github.io/main/building_inventory.csv"
+  },
+  "vconcat": [
+    {
+      "params": [{"name": "selection", "select": "interval"}],
+      "title": {"text": "Year Acquired vs. Year Constructed", "color": "blue"},
+      "transform": [
+        {
+          "filter": {
+            "and": [
+              {"field": "Year_Acquired", "gte": 1750},
+              {"field": "Year_Constructed", "gte": 1750}
+            ]
+          }
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "width": 15,
+        "cursor": "pointer",
+        "color": "green"
+      },
+      "encoding": {
+        "x": {
+          "field": "Year_Acquired",
+          "type": "quantitative",
+          "scale": {"domain": [1750, 2020]}
+        },
+        "y": {
+          "field": "Year_Constructed",
+          "type": "quantitative",
+          "scale": {"domain": [1750, 2020]}
+        }
+      }
+    },
+    {
+      "title": {
+        "text": "Total Square Footage Owned per Agency",
+        "color": "blue"
+      },
+      "mark": {"type": "bar", "width": 15, "cursor": "pointer"},
+      "encoding": {
+        "y": {
+          "field": "Square_Footage",
+          "type": "quantitative",
+          "aggregate": "sum"
+        },
+        "x": {"field": "Agency_Name", "type": "nominal"},
+        "color": {"field": "Agency_Name", "type": "nominal"}
+      }
+    }
+  ]
+};
+        vegaEmbed('#myviz_assign3', mySpec);
+    </script>
+</html>
